@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AI Chat</title>
+  <title>AI Chatbot</title>
   <meta charset="UTF-8">
 </head>
 <body>
 
-<h2>Ask AI Anything 🤖</h2>
+<h2>Ask AI 🤖</h2>
 
-<input type="text" id="userInput" placeholder="Type your question">
+<input type="text" id="userInput" placeholder="Type question">
 <button onclick="sendMessage()">Send</button>
 
 <p id="response"></p>
@@ -17,9 +17,9 @@
 async function sendMessage() {
 
   const userText = document.getElementById("userInput").value;
-  document.getElementById("response").innerText = "Thinking... 🤖";
+  document.getElementById("response").innerText = "Thinking...";
 
-  const apiKey = "AIzaSyBMSuP0q43zY_2e_00T5TcoA6AFWGMiz-4";
+  const apiKey = "AIzaSyBMSuP0q43zY_2e_00T5TcoA6AFWGMiz-4"; // 🔴 API key here
 
   const res = await fetch(
     "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey,
@@ -41,7 +41,7 @@ async function sendMessage() {
       data.candidates[0].content.parts[0].text;
   } else {
     document.getElementById("response").innerText =
-      "Error from AI";
+      "AI Error 😢";
   }
 }
 </script>
