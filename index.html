@@ -1,23 +1,40 @@
 <script>
 async function sendMessage() {
-  const userText = document.getElementById("userInput").value;
-  document.getElementById("response").innerText = "Testing API...";
 
-  const apiKey = "AIzaSyDE3DehdO4adMVRZM94CbtccN_tflFrB_c";
+  const userText = document.getElementById("userInput").value;
+  document.getElementById("response").innerText = "Thinking...";
+
+  const apiKey = "AIzaSyA-Xn6u7UeQe7wVOm0zXpWejkya6aAlpYM";
 
   const res = await fetch(
     "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + apiKey,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: userText }] }]
+        contents: [
+          {
+            parts: [
+              { text: userText }
+            ]
+          }
+        ]
       })
     }
   );
 
   const data = await res.json();
-  console.log(data);
-  document.getElementById("response").innerText = JSON.stringify(data);
+
+  console.log("API RESPONSE:", data);
+
+  if (data.candidates && data.candidates.length > 0) {
+    document.getElementById("response").innerText =
+      data.candidates[0].content.parts[0].text;
+  } else {
+    document.getElementById("response").innerText =
+      "API Returned Error";
+  }
 }
 </script>
