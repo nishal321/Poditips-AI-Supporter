@@ -1,13 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Website</title>
+  <title>AI Chat</title>
   <meta charset="UTF-8">
 </head>
 <body>
 
-<h1>Hello World ✅</h1>
-<p>Website is working now.</p>
+<h2>Ask AI Anything 🤖</h2>
+
+<input type="text" id="userInput" placeholder="Type your question">
+<button onclick="sendMessage()">Send</button>
+
+<p id="response"></p>
+
+<script>
+async function sendMessage() {
+
+  const userText = document.getElementById("userInput").value;
+  document.getElementById("response").innerText = "Thinking... 🤖";
+
+  const apiKey = "PASTE_YOUR_API_KEY_HERE";
+
+  const res = await fetch(
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{ text: userText }]
+        }]
+      })
+    }
+  );
+
+  const data = await res.json();
+
+  if (data.candidates) {
+    document.getElementById("response").innerText =
+      data.candidates[0].content.parts[0].text;
+  } else {
+    document.getElementById("response").innerText =
+      "Error from AI";
+  }
+}
+</script>
 
 </body>
 </html>
