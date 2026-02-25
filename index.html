@@ -1,10 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Chatbot</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input {
+      padding: 10px;
+      width: 250px;
+    }
+    button {
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    #response {
+      margin-top: 20px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Ask AI 🤖</h2>
+
+<input type="text" id="userInput" placeholder="Type your question">
+<button onclick="sendMessage()">Send</button>
+
+<div id="response"></div>
+
 <script>
+
 async function sendMessage() {
 
   const userText = document.getElementById("userInput").value;
-  document.getElementById("response").innerText = "Thinking...";
+  const responseDiv = document.getElementById("response");
 
-  const apiKey = "AIzaSyA-Xn6u7UeQe7wVOm0zXpWejkya6aAlpYM";
+  if (!userText) {
+    alert("Please type something!");
+    return;
+  }
+
+  responseDiv.innerText = "Thinking... 🤖";
+
+  const apiKey = "AIzaSyA-Xn6u7UeQe7wVOm0zXpWejkya6aAlpYM";  // 🔴 ADD KEY HERE
 
   const res = await fetch(
     "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + apiKey,
@@ -16,9 +58,7 @@ async function sendMessage() {
       body: JSON.stringify({
         contents: [
           {
-            parts: [
-              { text: userText }
-            ]
+            parts: [{ text: userText }]
           }
         ]
       })
@@ -27,14 +67,17 @@ async function sendMessage() {
 
   const data = await res.json();
 
-  console.log("API RESPONSE:", data);
+  console.log(data);
 
   if (data.candidates && data.candidates.length > 0) {
-    document.getElementById("response").innerText =
+    responseDiv.innerText =
       data.candidates[0].content.parts[0].text;
   } else {
-    document.getElementById("response").innerText =
-      "API Returned Error";
+    responseDiv.innerText = "AI Error ❌";
   }
 }
+
 </script>
+
+</body>
+</html>
